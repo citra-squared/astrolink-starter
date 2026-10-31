@@ -3,9 +3,8 @@ services:
     build: .
     ports:
       - "8000:8000"
-    environment:
-      - SECRET_KEY=${SECRET_KEY:-change-this-to-something-random}
-      - DATABASE_URL=postgresql+psycopg2://astrolink:astrolink@db:5432/astrolink
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -15,10 +14,8 @@ services:
 
   db:
     image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: astrolink
-      POSTGRES_USER: astrolink
-      POSTGRES_PASSWORD: astrolink
+    env_file:
+      - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
